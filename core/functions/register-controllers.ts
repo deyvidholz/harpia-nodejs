@@ -2,10 +2,12 @@ import glob from 'glob';
 import 'reflect-metadata';
 import { Application } from 'express';
 import { ControllerOptions, RouteDefinition } from '../decorators/controller';
+import { isInDistDirectory, parseGlob } from './helpers';
 
 const getControllerPaths = () => {
-  const dir = 'src/**/*.controller.{ts,js}';
-  return glob.sync(dir);
+  const joinDir = isInDistDirectory() ? 'dist/' : '';
+  const dir = `${joinDir}src/**/*.controller.{ts,js}`;
+  return parseGlob(glob.sync(dir));
 };
 
 export const registerControllers = (app: Application) => {

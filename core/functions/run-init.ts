@@ -1,9 +1,11 @@
 import glob from 'glob';
 import { InitFunctionParam } from 'src/global/typing';
+import { isInDistDirectory, parseGlob } from './helpers';
 
 const getInitPaths = () => {
-  const dir = 'src/**/*.init.{ts,js}';
-  return glob.sync(dir);
+  const joinDir = isInDistDirectory() ? 'dist/' : '';
+  const dir = `${joinDir}src/**/*.init.{ts,js}`;
+  return parseGlob(glob.sync(dir));
 };
 
 export const runInit = async (params: InitFunctionParam) => {

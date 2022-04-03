@@ -9,11 +9,15 @@ const dataSource = new DataSource({
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
   synchronize: true,
-  entities: ['src/**/*.entity.{js,ts}'],
-  migrations: ['src/**/*.migration.{js,ts}'],
-  subscribers: ['src/**/*.subscriber.{js,ts}'],
-  seeds: ['src/**/*.seed.{js,ts}'],
-  factories: ['src/**/*.factory.{js,ts}'],
+  entities: [process.env.TYPEORM_DIR_ENTITIES || 'src/**/*.entity.{js,ts}'],
+  migrations: [
+    process.env.TYPEORM_DIR_MIGRATIONS || 'src/**/*.migration.{js,ts}',
+  ],
+  subscribers: [
+    process.env.TYPEORM_DIR_SUBSCRIBERS || 'src/**/*.subscriber.{js,ts}',
+  ],
+  seeds: [process.env.TYPEORM_DIR_SEEDS || 'src/**/*.seed.{js,ts}'],
+  factories: [process.env.TYPEORM_DIR_FACTORIES || 'src/**/*.factory.{js,ts}'],
 } as PostgresConnectionOptions);
 
 export default dataSource;
