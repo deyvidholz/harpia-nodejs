@@ -1,10 +1,17 @@
 import { Repository } from 'typeorm';
+import { ResourceNotFoundException } from './exceptions/resource-not-found.exception';
 
 export class BaseService {
   protected repository: Repository<any>;
 
   async findOne(id: string) {
-    return this.repository.findOne({ where: { id } });
+    const response = await this.repository.findOne({ where: { id } });
+
+    if (!response) {
+      throw new ResourceNotFoundException();
+    }
+
+    return response;
   }
 
   async find(options?: FindParam) {
@@ -20,7 +27,8 @@ export class BaseService {
   }
 
   async delete(id: string) {
-    return this.repository.delete(id);
+    this.repository.delete(id);
+    return;
   }
 }
 

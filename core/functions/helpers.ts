@@ -7,3 +7,14 @@ export const isInDistDirectory = (): boolean => {
 export const parseGlob = (paths: string[]): string[] => {
   return paths.map((str) => str.replace(/^dist(\\|\/)/, ''));
 };
+
+export const upperCaseFirst = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export const lowerCaseFirst = (str: string) => {
+  return str.charAt(0).toLowerCase() + str.slice(1);
+};
+
+export const camelCaseToDashCase = (str: string) =>
+  str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
