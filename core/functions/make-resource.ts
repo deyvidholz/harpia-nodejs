@@ -14,14 +14,7 @@ const dashCaseResourceName = camelCaseToDashCase(resourceName);
 const modulesPath = path.join(__dirname, '..', '..', 'src', 'modules');
 const modulePath = path.join(modulesPath, dashCaseResourceName);
 
-const templatePath = path.join(
-  __dirname,
-  '..',
-  '..',
-  'src',
-  'global',
-  'templates'
-);
+const templatePath = path.join(__dirname, '..', '..', 'core', 'templates');
 
 function parseFileContent(content: string): string {
   const replacers = [
