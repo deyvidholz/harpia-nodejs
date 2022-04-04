@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import Joi from 'joi';
 
 export type ControllerOptions = {
   middlewares?: Function[];
@@ -30,6 +31,7 @@ export enum HttpMethods {
 
 export type RouteOptions = {
   middlewares?: Function[];
+  validator?: () => Joi.ObjectSchema;
 };
 
 export type RouteDefinition = {
@@ -37,6 +39,7 @@ export type RouteDefinition = {
   method: HttpMethods;
   methodName: string;
   middlewares: Function[];
+  validator?: () => Joi.ObjectSchema;
 };
 
 export const Route =
@@ -50,8 +53,9 @@ export const Route =
     const route: RouteDefinition = {
       method,
       methodName: propertyKey,
-      middlewares: options?.middlewares ?? [],
       path,
+      middlewares: options?.middlewares ?? [],
+      validator: options?.validator,
     };
 
     routes.push(route);

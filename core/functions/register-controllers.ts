@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { Application } from 'express';
 import { ControllerOptions, RouteDefinition } from '../decorators/controller';
 import { isInDistDirectory, parseGlob } from './helpers';
+import { validate } from '../middlewares/validator';
 
 const getControllerPaths = () => {
   const joinDir = isInDistDirectory() ? 'dist/' : '';
@@ -26,10 +27,18 @@ export const registerControllers = (app: Application) => {
         Reflect.getMetadata('routes', instance) || [];
 
       routes.forEach((route: RouteDefinition) => {
-        app[route.method](
-          `${prefix}${route.path}`,
+        const middlewares = [
           ...((options.middlewares as any) || []),
           ...(route.middlewares as any),
+        ];
+
+        if (route.validator) {
+          middlewares.push(validate(route.validator));
+        }
+
+        app[route.method](
+          `${prefix}${route.path}`,
+          ...middlewares,
           instance[route.methodName]
         );
       });

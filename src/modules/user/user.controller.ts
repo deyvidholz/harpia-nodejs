@@ -10,6 +10,7 @@ import { BaseController } from '../../global/base-controller';
 import { isAuthenticated } from './user.middlewares';
 import { UserService } from './user.service';
 import { CreateUserDTO, UpdateUserDTO } from './user.typing';
+import createUserValidator from './validators/create-user.validator';
 
 @Controller('/users')
 export default class UserController extends BaseController {
@@ -35,7 +36,9 @@ export default class UserController extends BaseController {
     });
   };
 
-  @Post('/')
+  @Post('/', {
+    validator: createUserValidator,
+  })
   create = async (req: Request, res: Response) => {
     const payload: CreateUserDTO = {
       username: req.body.username,
