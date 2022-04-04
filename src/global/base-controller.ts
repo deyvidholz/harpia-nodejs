@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { BaseService } from './base-service';
+import exceptionHandlersConfig from '../configs/exception-handlers.config';
 
 export abstract class BaseController {
   protected service: BaseService;
@@ -9,6 +10,12 @@ export abstract class BaseController {
       const response = await param.method();
       return param.res.status(param.successStatus || 200).json(response);
     } catch (error: any) {
+      const errorClassName = error?.constructor?.name;
+
+      if (errorClassName && exceptionHandlersConfig.parser[errorClassName]) {
+        exceptionHandlersConfig.parser[errorClassName](error);
+      }
+
       const errorResponseData: { [key: string]: any } = {
         error: true,
         message: error?.message || error?.stack,
