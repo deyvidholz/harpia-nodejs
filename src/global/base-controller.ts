@@ -38,7 +38,11 @@ export abstract class BaseController {
 
   async find(req: Request, res: Response): Promise<any> {
     return this.handle({
-      method: () => this.service.find(),
+      method: () =>
+        this.service.find({
+          itemsPerPage: Number(req.query['itemsPerPage']),
+          page: Number(req.query['page']),
+        }),
       res,
     });
   }

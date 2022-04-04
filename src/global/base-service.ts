@@ -1,3 +1,7 @@
+import {
+  getPaginationObject,
+  GetPaginationObjectParam,
+} from '../../core/functions/helpers';
 import { Repository } from 'typeorm';
 import { ResourceNotFoundException } from './exceptions/resource-not-found.exception';
 
@@ -15,7 +19,8 @@ export class BaseService {
   }
 
   async find(options?: FindParam) {
-    return this.repository.find();
+    const paginateOptions = getPaginationObject(options);
+    return this.repository.find(paginateOptions);
   }
 
   async create(payload: CreateParam) {
@@ -32,7 +37,7 @@ export class BaseService {
   }
 }
 
-type FindParam = {};
+type FindParam = Partial<GetPaginationObjectParam>;
 
 type CreateParam = any;
 
